@@ -1,10 +1,3 @@
-- CREAR ESTRUCTURA
-	npm install express-generator -g
-	express --view=pug red-bicicletas
-	html-to-pug.com
-
-- MAPAS
-	Leaflet. Openstreetmap.org
 var mymap = L.map('main_map').setView([-34.6012424, -58.3861497], 13);
 
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
