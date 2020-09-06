@@ -34,3 +34,5 @@ Dentro del describe se pone el nombre para declarar la suite y luego se pueden p
 	- Setup: todo lo relacionado a la ejecución previa del spec. Se usa beforeEach (que se ejecuta antes de cada spec) y beforeAll (que se ejecuta una vez antes de que se ejecuten los spec).
 	- Tear Down: es para la finalización de specs. Usa los métodos afterEach y afterAll.
 	- En jasmine.json conviene poner false en random al comienzo.
+	- En el test hay que pasar como parámetro muchas veces un done y ponerlo al final para que el proceso termine (done())
+	- Librería REQUEST: es para simular peticiones (get, post, etc)

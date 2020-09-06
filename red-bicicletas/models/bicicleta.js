@@ -24,13 +24,10 @@ Bicicleta.findByID = function (aBiciId) {
 };
 
 Bicicleta.removeById = function (aBiciId) {
-	for (let i = 0; i < Bicicleta.allBicis.length; i++) {
-		const element = Bicicleta.allBicis[i];
-		if (element.id == aBiciId) {
-			Bicicleta.allBicis.splice(i, 1);
-			break;
-		}
-	}
+	var bicicleta = Bicicleta.findByID(aBiciId);
+	var indice = Bicicleta.allBicis.indexOf(bicicleta);
+	console.log(indice);
+	return Bicicleta.allBicis.splice(indice, 1);
 };
 
 module.exports = Bicicleta;

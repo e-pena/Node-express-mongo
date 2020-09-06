@@ -17,7 +17,7 @@ exports.bicicleta_create = function (req, res) {
 exports.bicicleta_delete = function (req, res) {
 	Bicicleta.removeById(req.params.id);
 
-	res.status(200);
+	res.status(200).send('Elemento eliminado');
 };
 
 exports.bicicleta_update = function (req, res) {
