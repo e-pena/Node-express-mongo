@@ -16,3 +16,21 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 L.marker([-34.6012424, -58.3861497]).addTo(mymap);
 L.marker([-34.6012124, -58.3951497]).addTo(mymap);
 L.marker([-34.6012024, -58.3961497]).addTo(mymap);
+
+- TESTING - JASMINE
+	- Jasmine es un framework de desarrollo para testear código JS.
+	- Se instala primero de manera global (-g), luego como dependencia de desarrollo (--save-dev). 
+	- Luego se inicializa el módulo node node_modules/Jasmine/bin/Jasmine init
+	- Finalmente, se agrega en package.json en la sección de scripts: "scripts": {"test": jasmine}. Así, con npm test corren todos los test.
+	- Si queremos probar solo una cosa, se puede escribir el path: jasmine spec/nombreTest.spec.js
+	- En cada archivo spec se escribe la suite de test, que es el conjunto de tests. Se hace con la sintaxis:
+describe("Una suite", function() {
+  it("contiene un spec con una expectativa", function() {
+    expect(true).toBe(true);
+   });
+});
+La expectativa es la prueba que resulta con éxito, error o falla. El método global es expect(propiedad o valor a testear).toBe(valor esperado).
+Dentro del describe se pone el nombre para declarar la suite y luego se pueden poner infinitos it. Los spec son definidos con los it. 
+	- Setup: todo lo relacionado a la ejecución previa del spec. Se usa beforeEach (que se ejecuta antes de cada spec) y beforeAll (que se ejecuta una vez antes de que se ejecuten los spec).
+	- Tear Down: es para la finalización de specs. Usa los métodos afterEach y afterAll.
+	- En jasmine.json conviene poner false en random al comienzo.
