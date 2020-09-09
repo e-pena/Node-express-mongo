@@ -36,3 +36,57 @@ Dentro del describe se pone el nombre para declarar la suite y luego se pueden p
 	- En jasmine.json conviene poner false en random al comienzo.
 	- En el test hay que pasar como parámetro muchas veces un done y ponerlo al final para que el proceso termine (done())
 	- Librería REQUEST: es para simular peticiones (get, post, etc)
+
+- BASES DE DATOS
+	- Se puede interactuar con lenguaje nativo de la base de datos o usando ODM/ORM (Object Data/Relational Model). Usando esta segunda opción, baja la performance porque hay que transformar en métodos de la base de datos.
+
+- MONGODB
+	- El más utilizado de los ODM/ORM es Mongoose.
+	- insertOne recibe por parámetro un objeto JSON con el documento a insertar.
+	- inserMany recibe por parámetro un array de objetos.
+	- find es encontrar. Se puede filtrar como $gt (greater than) o $lt(lower than) u otros métodos. A los valores que busco les pongo un 1.
+	- updateOne(), updateMany(), replaceOne()
+	- deleteOne(), deleteMany()
+
+- MONGOOSE
+INICIAR:var mongoose = require('mongoose');
+	var mongoDB = 'mongodb+srv://dbUser:pyR2omJnA5ZyioDB@cluster0.azwaf.mongodb.net/test';
+	mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+	mongoose.Promise = global.Promise;
+	var db = mongoose.connection;
+	db.on('error', console.error.bind(console, 'connection error'));
+	db.once('open', function () {});
+CLASE SCHEMA: 	var Schema = mongoose.Schema;
+		var ciudadanoSchema = new Schema({
+		nombre: String,
+		edad: Number,
+		}); 
+		module.exports = mongoose.model('Ciudadano', ciudadanoSchema)
+AGREGAR MÉTODOS A SCHEMA: ciudadanoSchema.methods.saludar = function () {
+				var saludo = this.nombre ? `Hola, mi nombre es ${this.nombre}` : 'Hola, no tengo nombre';
+				console.log(saludo);
+			   };
+GENERAR MODELO ASOCIADO: var Ciudadano = mongoose.model('Ciudadano', ciudadanoSchema);
+CREAR NUEVO DOCUMENTO: var unCiudadano = new Ciudadano({ nombre: 'Pedro', edad: 21 });
+PERSISTIR EL MODELO: unCiudadano.save((err, unCiudadano) => {
+			if (err) return console.log(err);
+			unCiudadano.saludar();
+		      });
+OBTENER DATOS: Ciudadano.find((err, ciudadanos) => {
+		if (err) return console.error(err);
+		console.log(ciudadanos);
+		});
+FILTRAR: Ciudadano.find({ nombre: /^Pedro/ })
+CREAR NUEVA INSTANCIA: bicicletaSchema.statics.createInstance = function (code, color, modelo, ubicacion) {
+			return new this({
+			code: code,
+			color: color,
+			modelo: modelo,
+			ubicacion: ubicacion,
+			});
+		      };
+ESTABLECER REFERENCIAS DENTRO DE MONGO:
+	- Dentro del JSON, se pone el dato (por ejemplo, usuario), así: usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }
+	- Para indicar la referencia se debe poner .populate y pasarle el nombre con el que se lo va a designar. Por ejemplo:
+Reserva.find({}).populate('bicicleta').populate('usuario').exec(function () {
+						console.log(reservas[0]);}

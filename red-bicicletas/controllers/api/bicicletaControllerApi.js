@@ -15,9 +15,9 @@ exports.bicicleta_create = function (req, res) {
 };
 
 exports.bicicleta_delete = function (req, res) {
-	Bicicleta.removeById(req.params.id);
+	Bicicleta.removeById(req.body.id);
 
-	res.status(200).send('Elemento eliminado');
+	res.status(204).send();
 };
 
 exports.bicicleta_update = function (req, res) {
