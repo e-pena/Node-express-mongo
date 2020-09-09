@@ -10,7 +10,6 @@ describe('Testing Usuarios', function () {
 	});
 
 	beforeEach(function (done) {
-		mongoose.disconnect();
 		var mongoDB = 'mongodb+srv://dbUser:pyR2omJnA5ZyioDB@cluster0.azwaf.mongodb.net/test';
 		mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 		const db = mongoose.connection;
@@ -29,6 +28,7 @@ describe('Testing Usuarios', function () {
 				Bicicleta.deleteMany({}, function (err, success) {
 					if (err) console.log(err);
 					done();
+					mongoose.disconnect();
 				});
 			});
 		});
@@ -44,11 +44,11 @@ describe('Testing Usuarios', function () {
 			var hoy = new Date();
 			var maniana = new Date();
 			maniana.setDate(hoy.getDate() + 1);
-			usuario.reservar(bicicleta.id, hoy, mañana, function (err, reserva) {
+			usuario.reservar(bicicleta.id, hoy, maniana, function (err, reserva) {
 				Reserva.find({})
 					.populate('bicicleta')
 					.populate('usuario')
-					.exec(function () {
+					.exec(function (reservas) {
 						console.log(reservas[0]);
 						expect(reservas.length).toBe(1);
 						expect(reservas[0].diasDeReserva()).toBe(2);

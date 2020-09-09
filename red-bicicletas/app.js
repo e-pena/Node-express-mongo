@@ -7,13 +7,11 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 var mongoDB = 'mongodb+srv://dbUser:pyR2omJnA5ZyioDB@cluster0.azwaf.mongodb.net/test';
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.set('useCreateIndex', true);
 mongoose.Promise = global.Promise;
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
-db.once('open', function () {
-	console.log('Conectados a la test database');
-});
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');

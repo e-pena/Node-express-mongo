@@ -11,7 +11,6 @@ describe('Bicicleta API', () => {
 	});
 
 	beforeEach(function (done) {
-		mongoose.disconnect();
 		var mongoDB = 'mongodb+srv://dbUser:pyR2omJnA5ZyioDB@cluster0.azwaf.mongodb.net/test';
 		mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 		const db = mongoose.connection;
@@ -26,6 +25,7 @@ describe('Bicicleta API', () => {
 		Bicicleta.deleteMany({}, function (err, success) {
 			if (err) console.log(err);
 			done();
+			mongoose.disconnect();
 		});
 	});
 
@@ -47,7 +47,7 @@ describe('Bicicleta API', () => {
 			request.post(
 				{
 					headers: headers,
-					url: `${base_url}/create'`,
+					url: `${base_url}/create`,
 					body: aBici,
 				},
 				function (error, res, body) {
@@ -64,24 +64,22 @@ describe('Bicicleta API', () => {
 	});
 
 	describe('DELETE BICICLETAS /delete', () => {
-		it('Status 200', (done) => {
-			var a = Bicicleta.createInstance(1, 'rojo', 'urbana', [-34.6012424, -58.3861497]);
-			Bicicleta.add(a, function (err, newBici) {
-				var headers = { 'content-type': 'application/json' };
-				var aBici = '{ "code": 1, "color": "rojo", "modelo": "urbana", "lat": -34.6012424, "lng": -58.3861497 }';
-				request.post({
+		it('Status 204', (done) => {
+			var headers = { 'content-type': 'application/json' };
+			var aBici = new Bicicleta({ code: 1, color: 'rojo', modelo: 'urbana' });
+			aBici.ubicacion = [-34, -54];
+			aBici.save(() => {
+				request.delete({
 					headers: headers,
-					url: `${base_url}/create'`,
-					body: aBici,
-				});
-			});
-			expect(Bicicleta.allBicis.length).toBe(0);
-
-			var a = new Bicicleta(1, 'rojo', 'urbana', [-34.6012424, -58.3861497]);
-
-			request.delete('http://localhost:3000/api/bicicletas/1/delete', function (error, res, body) {
-				expect(res.statusCode).toBe(200);
-				expect(Bicicleta.allBicis.length).toBe(0);
+					url: `${base_url}/delete`,
+					body: aBici.code,
+				}),
+					function (error, res, body) {
+						expect(res.statusCode).toBe(204);
+						Bicicleta.allBicis((err, resultado) => {
+							expect(resultado.length).toBe(0);
+						});
+					};
 				done();
 			});
 		});

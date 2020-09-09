@@ -7,7 +7,6 @@ describe('Testing Bicicletas', function () {
 	});
 
 	beforeEach(function (done) {
-		mongoose.disconnect();
 		var mongoDB = 'mongodb+srv://dbUser:pyR2omJnA5ZyioDB@cluster0.azwaf.mongodb.net/test';
 		mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 		const db = mongoose.connection;
@@ -22,6 +21,7 @@ describe('Testing Bicicletas', function () {
 		Bicicleta.deleteMany({}, function (err, success) {
 			if (err) console.log(err);
 			done();
+			mongoose.disconnect();
 		});
 	});
 
